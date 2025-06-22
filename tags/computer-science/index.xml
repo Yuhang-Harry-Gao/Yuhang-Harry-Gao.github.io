@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Computer Science on Yuhang&#39;s Blog</title>
+    <link>https://Yuhang-Harry-Gao.github.io/tags/computer-science/</link>
+    <description>Recent content in Computer Science on Yuhang&#39;s Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Oct 2002 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Yuhang-Harry-Gao.github.io/tags/computer-science/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hello World!</title>
+      <link>https://Yuhang-Harry-Gao.github.io/post/helloworld/</link>
+      <pubDate>Thu, 31 Oct 2002 00:00:00 +0000</pubDate>
+      <guid>https://Yuhang-Harry-Gao.github.io/post/helloworld/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;学计算机一定要有一个非常强大的心理状态。什么呢？计算机的所有东西都是人做出来的，别人能想出来的我也能一定能想的出来。在计算机里头没有任何黑魔法，所有的东西只不过是我现在不知道而已。总有一天我会把所有的细节，所有的内部的东西全部搞明白了。&amp;rdquo;&lt;br&gt;&#xA;—— &lt;a href=&#34;https://person.zju.edu.cn/wengkai&#34;&gt;翁恺&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

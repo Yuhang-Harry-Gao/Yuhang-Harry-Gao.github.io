@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Google on Yuhang&#39;s Blog</title>
+    <link>https://Yuhang-Harry-Gao.github.io/tags/google/</link>
+    <description>Recent content in Google on Yuhang&#39;s Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://Yuhang-Harry-Gao.github.io/tags/google/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Google AI Studio 的参数设置</title>
+      <link>https://Yuhang-Harry-Gao.github.io/post/aistudio/</link>
+      <pubDate>Tue, 10 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://Yuhang-Harry-Gao.github.io/post/aistudio/</guid>
+      <description>&lt;p&gt;这篇blog简单说说怎么设置 AI studio 的 Run settings(界面右侧的面板)吧，具体细节去看&lt;a href=&#34;https://ai.google.dev/gemini-api/docs/ai-studio-quickstart&#34;&gt;Google AI Studio quickstart&lt;/a&gt;: &lt;a href=&#34;https://ai.google.dev/gemini-api/docs/ai-studio-quickstart&#34;&gt;https://ai.google.dev/gemini-api/docs/ai-studio-quickstart&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;&#xA;&lt;p&gt;利用 &lt;strong&gt;Google AI Studio&lt;/strong&gt; ，可以快速尝试各种模型，使用不同的提示进行试验。准备好构建后，可以选择“获取代码”和首选编程语言，以使用 Gemini API。(——叽里咕噜说啥呢？)&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
