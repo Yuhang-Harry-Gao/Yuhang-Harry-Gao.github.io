@@ -94,7 +94,20 @@
 
 
 
-
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var links = document.querySelectorAll('a[href^="http"]');
+          links.forEach(function(link) {
+              if (link.hostname !== window.location.hostname) {
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+              }
+          });
+      });
+      </script>
+      
+  </head>
 
 
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -235,7 +248,10 @@ const hitTemplate = function(hit) {
   if (hit.date) {
     date = moment.unix(hit.date).format('MMM D, YYYY');
   }
-  let url = `${hit.url}#${hit.anchor}`;
+  let url = hit.url;
+  if (hit.anchor) {
+    url = `${hit.url}#${hit.anchor}`;
+  }
   const title = hit._highlightResult.title.value;
 
   let breadcrumbs = '';

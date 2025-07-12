@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Yuhang&#39;s Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="img/home-bg-rem.webp">
+    <meta property="twitter:image" content="img/home-bg-rem.webp" />
+    
+
+    
+    <meta name="title" content="Diffusion Model mini-tutorial" />
+    <meta property="og:title" content="Diffusion Model mini-tutorial" />
+    <meta property="twitter:title" content="Diffusion Model mini-tutorial" />
+    
+
+    
+    <meta name="description" content="高雨航, 学生 | 这里是 高雨航 的博客 | 面向从0开始的地球Online生活">
+    <meta property="og:description" content="高雨航, 学生 | 这里是 高雨航 的博客 | 面向从0开始的地球Online生活" />
+    <meta property="twitter:description" content="高雨航, 学生 | 这里是 高雨航 的博客 | 面向从0开始的地球Online生活" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="高雨航, gaoyuhang, Yuhang, Harry Gao, Diffusion, 高雨航的博客, Generative Models, 互联网, Machine Learning, 人工智能, AI ">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Diffusion Model mini-tutorial | 高雨航的博客 | Yuhang Harry Gao Blog</title>
+
+    <link rel="canonical" href="/post/diffusion-models/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+    
+    
+    
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+    
+</head>
+
+
+
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var links = document.querySelectorAll('a[href^="http"]');
+          links.forEach(function(link) {
+              if (link.hostname !== window.location.hostname) {
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+              }
+          });
+      });
+      </script>
+      
+  </head>
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Yuhang&#39;s Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/llm/">llm</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%94%9F%E6%B4%BB/">从0开始的机器学习生活</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E7%BB%9D%E6%B4%BB%E5%BF%85%E7%9C%8B%E6%A6%9C/">绝活！必看榜！</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive/">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes/">NOTES</a></li>
+                    
+                        <li><a href="/about/">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg-rem.webp')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/ai" title="AI">
+                            AI
+                        </a>
+                        
+                        <a class="tag" href="/tags/machine-learning" title="Machine Learning">
+                            Machine Learning
+                        </a>
+                        
+                        <a class="tag" href="/tags/probabilistic-machine-learning" title="Probabilistic Machine Learning">
+                            Probabilistic Machine Learning
+                        </a>
+                        
+                        <a class="tag" href="/tags/diffusion-models" title="Diffusion Models">
+                            Diffusion Models
+                        </a>
+                        
+                        <a class="tag" href="/tags/generative-models" title="Generative Models">
+                            Generative Models
+                        </a>
+                        
+                    </div>
+                    <h1>Diffusion Model mini-tutorial</h1>
+                    <h2 class="subheading">扩散模型: 文章本天成, 妙手偶得之</h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Yuhang
+                             
+                            on 
+                            Friday, June 6, 2025
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <blockquote>
+<p>&ldquo;The sculpture is already complete within the marble block, before I start my work. It is already there, I just have to chisel away the superfluous material.&quot;—— Michelangelo</p></blockquote>
+<p>写这篇blog是为了记录自己的学习过程。我认为: 如果我不能把知识写成文字, 那就说明我也没理解。<br>
+希望这篇 blog 能够顺便帮助 $0$ 基础的朋友学习。<br>
+特别希望收到各位大佬的帮助和指导!</p>
+<h1 id="从0开始的-diffusion-model-学习">从0开始的 Diffusion Model 学习</h1>
+<p>很多人都说从 <a href="https://arxiv.org/abs/2006.11239"><strong>DDPM</strong></a> 和 <a href="https://arxiv.org/abs/2010.02502"><strong>DDIM</strong></a> 入手, 但是我觉得这对于像我这样的纯小白来说还是太难了。于是自己摸索了一条学习路线</p>
+<h2 id="学习路线">学习路线</h2>
+<table>
+  <thead>
+      <tr>
+          <th>阶段</th>
+          <th>目标</th>
+          <th>推荐资源</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>初级</td>
+          <td>理解原理, 跑通DDPM</td>
+          <td><a href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/">Lilian Weng的博客文章</a>、DDPM 论文、PyTorch 实现</td>
+      </tr>
+      <tr>
+          <td>中级</td>
+          <td>引入条件, 优化采样</td>
+          <td>DDIM 论文、Stable Diffusion 源码</td>
+      </tr>
+      <tr>
+          <td>高级</td>
+          <td>研究创新方向</td>
+          <td>Score SDE、Ediffi、多模态 Diffusion</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="前置知识">前置知识</h2>
+<ul>
+<li>
+<p>PyTorch</p>
+<ul>
+<li><a href="https://huggingface.co/docs/diffusers/en/index"><strong>Diffusers</strong></a> 主要基于 PyTorch</li>
+</ul>
+</li>
+<li>
+<p>概率论与统计 (Probability &amp; Statistics)</p>
+<ul>
+<li>高斯分布(正态分布)</li>
+<li>贝叶斯 —— <a href="/post/bayes-theorem/">简单理解 Bayes&rsquo; Theorem</a></li>
+<li>极大似然估计 —— <a href="https://zhuanlan.zhihu.com/p/36824006">简单理解 maximum likelihood estimation(MLE)</a></li>
+<li>概率图模型
+<ul>
+<li>马尔可夫链</li>
+<li>联合概率建模</li>
+</ul>
+</li>
+<li>Kullback – Leibler(KL) Divergence —— <a href="https://blog.csdn.net/matrix_space/article/details/80550561">机器学习：KL 散度</a></li>
+</ul>
+</li>
+<li>
+<p>微积分 (Calculus) &ndash; MIT 的微积分课</p>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/pages/syllabus/">MIT18.01: Single Variable Calculus</a></li>
+<li><a href="https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/">MIT18.02: Multivariable Calculus</a></li>
+</ul>
+</li>
+<li>
+<p>线性代数 (Linear Algebra)</p>
+<ul>
+<li><a href="https://math.mit.edu/~gs/linearalgebra/">Introduction to Linear Algebra &ndash; Gilbert Strang</a></li>
+<li><a href="http://web.mit.edu/18.06/www/">MIT 18.06 Linear Algebra</a></li>
+</ul>
+</li>
+<li>
+<p>微分方程（Differential Equations）</p>
+<ul>
+<li>常微分方程 (Ordinary Differential Equation)</li>
+<li>随机微分方程 (Stochastic Differential Equation)</li>
+</ul>
+</li>
+<li>
+<p>生成模型基础</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1406.2661">Generative Adversarial Networks (<strong>GAN</strong>)</a></li>
+<li><a href="https://arxiv.org/abs/1312.6114">Auto-Encoding Variational Bayes (<strong>VAE</strong>)</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="diffusion模型基础入门">Diffusion模型基础入门</h2>
+<p>1.模型优化与加速采样</p>
+<ul>
+<li>DDPM → DDIM → Score → based Models</li>
+<li>快速采样方法(DDIM、EDM、SGM、PFGM 等)</li>
+</ul>
+<p>2.条件生成模型(如 Stable Diffusion)</p>
+<ul>
+<li>文本条件生成:CLIP+UNet+ Cross Attention</li>
+<li>学习 HuggingFace diffusers 实现</li>
+</ul>
+<p>3.多模态应用</p>
+<ul>
+<li>图像编辑、上色、去噪</li>
+<li>音频生成、3D建模、视频生成(如 Imagen Video、VideoPoet)</li>
+</ul>
+<h2 id="tutorial">Tutorial</h2>
+<ol>
+<li><a href="https://arxiv.org/pdf/2406.08929">Step-by-Step Diffusion: An Elementary Tutorial</a></li>
+<li><a href="https://arxiv.org/abs/2412.06264">Flow Matching Guide and Code</a></li>
+</ol>
+<h2 id="库">库</h2>
+<ul>
+<li><a href="https://huggingface.co/docs/diffusers/en/index"><strong>Diffusers</strong></a></li>
+</ul>
+<h2 id="视频课程">视频/课程</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=ifCDXFdeaaM&amp;t=210s">李宏毅老师diffusion课程(YouTube)</a></li>
+<li><a href="https://diffusion.csail.mit.edu/">斯坦福的CS236生成模型课程</a></li>
+<li><a href="https://mit-6s978.github.io/schedule.html">何恺明的生成模型课(无视频)</a></li>
+<li><a href="https://space.bilibili.com/31105519?spm_id_from=333.337.0.0">Nik_Li</a>的<a href="https://www.bilibili.com/video/BV1wx421k74m/?share_source=copy_web&amp;vd_source=25315371f6978973dec501d96ed7811a">一个视频看懂VAE的原理以及关于latent diffusion的思考</a></li>
+<li>B站扩散新人向up主<a href="https://space.bilibili.com/323109608">double童发发</a>, 讲得通俗易懂(包括<a href="https://www.bilibili.com/video/BV1Wv3xeNEds?vd_source=25315371f6978973dec501d96ed7811a">flow matching</a>)</li>
+</ul>
+<h1 id="paper">Paper</h1>
+<ol>
+<li><a href="https://arxiv.org/abs/1406.2661">Generative Adversarial Networks (<strong>GAN</strong>)</a></li>
+<li><a href="https://arxiv.org/abs/1312.6114">Auto-Encoding Variational Bayes (<strong>VAE</strong>)</a></li>
+<li><a href="https://arxiv.org/abs/1906.02691">An Introduction to Variational Autoencoders</a></li>
+<li><a href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Models (<strong>DDPM</strong>)</a></li>
+<li><a href="https://arxiv.org/abs/2010.02502">Denoising Diffusion Implicit Models (<strong>DDIM</strong>)</a></li>
+</ol>
+<h1 id="扩散模型diffusion-models">扩散模型(Diffusion Models)</h1>
+<ul>
+<li>
+<p><strong>Training</strong>：</p>
+<ul>
+<li>
+<p><strong>正向过程：</strong> 通过给<em>真实的</em> $\mathbf{x}_0$ 一步一步地注入 ${\epsilon}_{t=1,2,&hellip;,t,&hellip;,T}$，使其在任意时刻 $t$ 的状态 $\mathbf{x}_t$ 成为一个服从高斯分布的随机噪声样本。最终，在 $t=T$ 时，<strong>$\mathbf{x}_T$的概率分布</strong>会趋近于一个标准高斯分布$\mathcal{N}(\mathbf{0}, \mathbf{I})$。这个过程被设计成一个<strong>马尔可夫链</strong>。  <blockquote>可以利用<strong>高斯分布</strong>的性质进行化简：用<strong>总噪声</strong> ${\epsilon}$ 表示 $\mathbf{x}_0$ 到 $\mathbf{x}_t$ 的噪声。所以，我们可以通过封闭形式公式 $\mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \boldsymbol{\epsilon}$ 从 $\mathbf{x}_{0}$直接计算出$\mathbf{x}_{t}$，而不用计算每一步</blockquote></p>
+</li>
+<li>
+<p><strong>反向过程：</strong> 每次训练迭代中，输入 $\mathbf{x}_t$ 和 $t$，模型预测正向过程中，从 $\mathbf{x}_{0}$ 到 $\mathbf{x}_t$ 所注入的<strong>总噪声</strong> ${\epsilon}$，模型给出的预测噪声记为 ${\epsilon}_{\theta}({\mathbf{x}_t}, {t})$ <blockquote>$t$是自己挑选的，$\mathbf{x}_t$是根据快捷公式计算出来的。</blockquote></p>
+</li>
+<li>
+<p><strong>计算损失：</strong> 得益于<strong>高斯分布</strong>的性质，整个复杂的理论损失函数（即变分下界Variational Lower Bound）可以被地简化为：比较<em>模型预测的噪声</em> ${\epsilon}_{\theta}({\mathbf{x}_t}, {t})$ 和<em>正向过程</em>中的 ${\epsilon}$。<blockquote>因为很难直接比较最终生成得到的结果 $\hat{\mathbf{x}}_0$ 和<em>真实的</em> $\mathbf{x}_0$。</blockquote></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Sampling</strong>：<br>
+当模型训练完成后，我们就可以用它来生成全新的结果。这个过程就是<strong>反向过程：</strong></p>
+<ul>
+<li><strong>反向过程：</strong> 从一个完全随机的标准高斯噪声样本 ${\mathbf{x}_T} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$开始，启动一个从 $t=T$ 到 $t=1$的循环，一步一步地执行已经训练好的Denoising模型。根据当前的状态 $\mathbf{x}_t$ 和时间$t$ <em>减去(denoise)</em> 预测的噪声 ${\epsilon}_{\theta}({\mathbf{x}_t}, {t})$ 得到更清晰的结果 ${\mathbf{x}}_{t-1}$。当循环结束时，得到的全新结果就是 $\hat{\mathbf{x}}_{0}$</li>
+</ul>
+  <blockquote>就像本篇blog开头引用的阿基米德所说：“这座雕塑在大理石块中已然成型，在我着手工作之前它就已存在。它就在那里，我只需凿去多余的材料。”</blockquote>
+</li>
+</ul>
+<h2 id="训练">训练</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Algorithm 1 Training</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1: <strong>repeat</strong><br>2:     $\mathbf{x}_0 \sim q(\mathbf{x}_0)$<br>3:     $t \sim \text{Uniform}({1, \dots, T})$<br>4:     $\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$<br>5:     在以下梯度上执行一步梯度下降：<br>    $\qquad \nabla_\theta \lVert\boldsymbol{\epsilon} - \boldsymbol{\epsilon}_\theta(\sqrt{\bar{\alpha}_t}\mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t}\boldsymbol{\epsilon}, t)\rVert^2 $<br>6: <strong>until</strong> converged</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="正向过程">正向过程</h3>
+<h4 id="单步骤加噪">单步骤加噪</h4>
+<p>$$q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x} _{t-1}, \beta_t \mathbf{I})$$</p>
+<ul>
+<li>随机变量：$\mathbf{x}_t$</li>
+<li>均值：$\sqrt{1 - \beta_t} \mathbf{x} _{t-1}$</li>
+<li>方差:$\beta_t \mathbf{I}$</li>
+</ul>
+<h4 id="任意步长加噪过程">任意步长加噪过程</h4>
+<p>利用马尔可夫链 (Markov Chain)的性质
+$$q(\mathbf{x}_{1:T}|\mathbf{x}_0) = \prod_{t=1}^{T} q(\mathbf{x}_t | \mathbf{x}_{t-1})$$</p>
+<h4 id="任意时刻">任意时刻</h4>
+<p>根据高斯分布的性质: 多个独立高斯随机变量的和仍然是一个高斯随机变量，可以将上述多步累积的噪声合并，从而推导出任意时刻 $t$ 的边缘分布。</p>
+<p>$$q(\mathbf{x}_t | \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t) \mathbf{I})$$</p>
+<p>其中，</p>
+<ul>
+<li>$β_t$ 是第$t$步的噪声强度，当分布越来越接近噪声分布的时候，$β_t$ 可以更大</li>
+<li>$\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$: $\bar{\alpha}_t$ 是前 $t$ 次所有 $\alpha$ 值的乘积</li>
+<li>如何设置$t$？使得 $\sqrt{\bar{\alpha}_t}$接近 $0$，$(1 - \bar{\alpha}_t)$ 接近 $1$</li>
+</ul>
+<blockquote>
+推导过程：从递归到封闭形式
+<br><br>
+1.正向过程中的表述
+$$
+q(\mathbf{x}_t | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x} _{t-1}, \beta_t \mathbf{I})
+\qquad
+q(\mathbf{x}_{1:T} \mid \mathbf{x}_0) = \prod_{t=1}^{T} q(\mathbf{x}_t \mid \mathbf{x}_{t-1})
+$$
+设${\alpha}_t = 1 - \beta_t$ 和 $\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$
+<p>根据<strong>Reparameterization trick (重参数化技巧)</strong>，从这个分布中采样一个 $\mathbf{x}_t$ 的等价操作（即计算实现）是：
+$$
+\mathbf{x}_t = \sqrt{1 - \beta_t} \mathbf{x}_{t-1} + \sqrt{\beta_t} \boldsymbol{\epsilon}_{t-1}, \quad \text{其中 } \boldsymbol{\epsilon}_{t-1},\boldsymbol{\epsilon}_{t-2},… \sim \mathcal{N}(\mathbf{0}, \mathbf{I})
+$$
+使用 ${\alpha}_t = 1 - \beta_t$ 进行代换后，得到以下形式：
+$$
+\mathbf{x}_t = \sqrt{\alpha_t} \mathbf{x}_{t-1} + \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1}
+$$
+<br><br>
+2. 展开递归关系</p>
+<p>我们将上述操作形式的公式递归展开。将 $\mathbf{x}_{t-1}$ 的表达式代入，得到：
+$$
+\begin{align*}
+\mathbf{x}_t &amp;= \sqrt{\alpha_t} \left( \sqrt{\alpha_{t-1}} \mathbf{x}_{t-2} + \sqrt{1 - \alpha_{t-1}} \boldsymbol{\epsilon}_{t-2} \right) + \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1} \\
+&amp;= \sqrt{\alpha_t \alpha_{t-1}} \mathbf{x}_{t-2} + \underbrace{\left( \sqrt{\alpha_t(1 - \alpha_{t-1})} \boldsymbol{\epsilon}_{t-2} + \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1} \right)}_{\text{这是合并噪声项}{\bar{\epsilon}}}
+\end{align*}
+$$
+<br><br>
+3. 分析合并噪声${\bar{\epsilon}}$的概率分布</p>
+<p>根据高斯分布的可加性（两个独立高斯变量的和依然是高斯分布）,其均值为 $\mathbf{0}$:
+$$
+\begin{align*}
+\mathbb{E}[{\bar{\epsilon}}] &amp;= \mathbb{E}\left[ \sqrt{\alpha_t(1 - \alpha_{t-1})} \boldsymbol{\epsilon}_{t-2} + \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1} \right] \\
+&amp;= \sqrt{\alpha_t(1 - \alpha_{t-1})} \mathbb{E}[\boldsymbol{\epsilon}_{t-2}] + \sqrt{1 - \alpha_t} \mathbb{E}[\boldsymbol{\epsilon}_{t-1}] \\
+&amp;= \sqrt{\alpha_t(1 - \alpha_{t-1})} \cdot \mathbf{0} + \sqrt{1 - \alpha_t} \cdot \mathbf{0} = \mathbf{0}
+\end{align*}
+$$</p>
+<p>因为 ${\epsilon}_{t-1},{\epsilon}_{t-2},…$ 相互独立，它们的协方差为 $\mathbf{0}$，所以 ${\bar\epsilon}$ 方差为两个独立方差之和：</p>
+<p>$$
+\begin{align*}
+\text{Var}_{\bar{\epsilon}} &amp;= \text{Var}\left( \sqrt{\alpha_t(1 - \alpha_{t-1})} \boldsymbol{\epsilon}_{t-2}  + \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1}\right) \\
+&amp;= \text{Var}\left( \sqrt{\alpha_t(1 - \alpha_{t-1})} \boldsymbol{\epsilon}_{t-2} \right) + \text{Var}\left( \sqrt{1 - \alpha_t} \boldsymbol{\epsilon}_{t-1} \right) \\
+&amp;= \left( \sqrt{\alpha_t(1 - \alpha_{t-1})}\right)^2\text{Var}({\epsilon}_{t-2}) + \left( \sqrt{1 - \alpha_t}\right)^2\text{Var}({\epsilon}_{t-1})\\
+&amp;= \left( \alpha_t(1 - \alpha_{t-1}) \right) \mathbf{I} + \left( 1 - \alpha_t \right) \mathbf{I} \\
+&amp;= (\alpha_t - \alpha_t\alpha_{t-1} + 1 - \alpha_t) \mathbf{I} \\
+&amp;= (1 - \alpha_t\alpha_{t-1}) \mathbf{I}
+\end{align*}
+$$
+<br><br>
+4. 构造等价变量并替换</p>
+<p>在推导刚开始，定义了 ${\bar{\alpha}_t} = \prod_{i=1}^t \alpha_i$，因此上面计算出的方差为 $(1 - \bar{\alpha}_t)\mathbf{I}$。
+这意味着合并噪声项服从分布 $\mathcal{N}(\mathbf{0}, (1 - \bar{\alpha}_t)\mathbf{I})$。</p>
+<p>现在，我们构造一个分布完全相同的简单变量。取一个<strong>全新的、单一的</strong>标准高斯噪声 $\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$，那么随机变量 $\sqrt{1 - \bar{\alpha}_t} \boldsymbol{\epsilon}$ 也服从 $\mathcal{N}(\mathbf{0}, (1 - \bar{\alpha}_t)\mathbf{I})$ 分布。
+<br><br></p>
+<ol start="5">
+<li>推广得到封闭形式公式
+<br><br>
+由于<strong>分布等价</strong>，将此替换逻辑推广到从 $\mathbf{x}_0$ 到 $\mathbf{x}_t$ 的所有步骤，我们得到最终的、一步到位的封闭形式公式：
+$$
+\mathbf{x}_t = \sqrt{\bar{\alpha}_t} \mathbf{x}_0 + \sqrt{1 - \bar{\alpha}_t} \boldsymbol{\epsilon}
+$$
+这个公式是扩散模型能够高效训练的关键。</li>
+</ol>
+</blockquote>
+<h3 id="反向过程">反向过程:</h3>
+<p>如果可以逆转上述过程，并且从 $q(\mathbf{x}_{t-1} | \mathbf{x}_t)$ 中采样。但是很难得知 $q(\mathbf{x})$(真实分布)，所以需要训练一个 ${p_\theta}$ 来近似这些<strong>条件概率</strong></p>
+<p>$${p_\theta}(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \boldsymbol{\mu}_\theta(\mathbf{x}_t, t), \boldsymbol{\Sigma}_\theta(\mathbf{x}_t, t))$$</p>
+<p>$${p_\theta}(\mathbf{x}_{0:T}) = p(\mathbf{x}_{T})\prod_{t=1}^{T} p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_{t})$$</p>
+<p>其中</p>
+<ul>
+<li>
+<p>${p_{\theta}}(\mathbf{x}_{t-1}|\mathbf{x}_t)$，${\theta}$ 代表神经网络的参数, 在 ${\theta}$ 参数下进行反向过程</p>
+</li>
+<li>
+<p>$\boldsymbol{\mu}_\theta(\mathbf{x}_t, t)$ 代表<strong>漂移项</strong></p>
+</li>
+</ul>
+<h3 id="后验的扩散条件概率">后验的扩散条件概率</h3>
+<p>$q(\mathbf{x}_{t-1} | \mathbf{x}_t, \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_{t-1}; \tilde{\boldsymbol{\mu}}_t(\mathbf{x}_t, \mathbf{x}_0), \tilde{\beta}_t \mathbf{I})$</p>
+<blockquote>
+公式推导
+$$
+\begin{align*} q(\mathbf{x}_{t-1}|\mathbf{x}_t, \mathbf{x}_0) &= q(\mathbf{x}_t|\mathbf{x}_{t-1}, \mathbf{x}_0) \frac{q(\mathbf{x}_{t-1}|\mathbf{x}_0)}{q(\mathbf{x}_t|\mathbf{x}_0)} \\
+&\propto \exp\left(-\frac{1}{2}\left( \frac{(\mathbf{x}_t - \sqrt{\alpha_t}\mathbf{x}_{t-1})^2}{\beta_t} + \frac{(\mathbf{x}_{t-1} - \sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0)^2}{1 - \bar{\alpha}_{t-1}} - \frac{(\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0)^2}{1 - \bar{\alpha}_t} \right)\right) \\
+&= \exp\left( -\frac{1}{2} \left( \frac{\mathbf{x}_t^2 - 2\sqrt{\alpha_t}\mathbf{x}_t\textcolor{blue}{\mathbf{x}_{t-1}} + \alpha_t\textcolor{red}{\mathbf{x}_{t-1}^2}}{\beta_t} + \frac{\textcolor{red}{\mathbf{x}_{t-1}^2} - 2\sqrt{\bar{\alpha}_{t-1}}\mathbf{x}_0\textcolor{blue}{\mathbf{x}_{t-1}} + \bar{\alpha}_{t-1}\mathbf{x}_0^2}{1 - \bar{\alpha}_{t-1}} - \frac{(\mathbf{x}_t - \sqrt{\bar{\alpha}_t}\mathbf{x}_0)^2}{1 - \bar{\alpha}_t} \right) \right)\\
+&= \exp\left(-\frac{1}{2}\left( \textcolor{red}{\left(\frac{\alpha_t}{\beta_t} + \frac{1}{1 - \bar{\alpha}_{t-1}}\right)\mathbf{x}_{t-1}^2 -} \textcolor{blue}{\left(\frac{2\sqrt{\alpha_t}}{\beta_t}\mathbf{x}_t + \frac{2\sqrt{\bar{\alpha}_{t-1}}}{1 - \bar{\alpha}_{t-1}}\mathbf{x}_0\right)\mathbf{x}_{t-1}} + C(\mathbf{x}_t, \mathbf{x}_0) \right)\right) \end{align*}
+$$
+</blockquote>
+<h4 id="lower-bound">Lower Bound</h4>
+<blockquote>Lower bound of $\log P(x)$：这个数值越大，说明模型生成的能力越强</blockquote>
+<p>对此理解成$\text{VAE}$是一步, 而$\text{DDPM}$是多步</p>
+<p>$ \text{VAE:} \quad \text{Maximize } \log P_{\theta}(\mathbf{x}) \rightarrow \text{Maximize } E_{q(z|\mathbf{x})}\left[\log\left(\frac{P(\mathbf{x},z)}{q(z|\mathbf{x})}\right)\right]$</p>
+<p>$ \text{DDPM:} \quad \text{Maximize } \log P_{\theta}(\mathbf{x}_0) \rightarrow \text{Maximize } E_{q(\mathbf{x}_{1:T}|\mathbf{x}_0)}\left[\log\left(\frac{P(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T}|\mathbf{x}_0)}\right)\right]$</p>
+<h2 id="采样过程">采样过程</h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Algorithm 2 Sampling</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1. $\mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$<br>2. <strong>for</strong> $t = T, \dots, 1$ <strong>do</strong><br>3.     $\mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$ if $t &gt; 1$, else $\mathbf{z} = \mathbf{0}$<br>4.     $\mathbf{x}_{t-1} = \frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t - \frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}}\boldsymbol{\epsilon}_\theta(\mathbf{x}_t, t)\right) + \sigma_t \mathbf{z}$<br>5. <strong>end for</strong><br>6. <strong>return</strong> $\mathbf{x}_0$</td>
+      </tr>
+  </tbody>
+</table>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/machine-learning/" data-toggle="tooltip" data-placement="top" title="Machine Learning">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/ai-studio/" data-toggle="tooltip" data-placement="top" title="Google AI Studio 的参数设置">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+<script src="https://giscus.app/client.js"
+        data-repo="Yuhang-Harry-Gao/Yuhang-Harry-Gao.github.io"
+        data-repo-id="R_kgDOO5QP4w"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOO5QP484CrS_j"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/ai" title="ai">
+                            ai
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/machine-learning" title="machine learning">
+                            machine learning
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/statistics" title="statistics">
+                            statistics
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://wen-xuan-xu.github.io/">Wenxuan Xu&#39;s Blog</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <li>
+                        <a href="mailto:harrygao1031@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/Yuhang-Harry-Gao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/gaoyuhang">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+            </ul>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow" title="' + t + '">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

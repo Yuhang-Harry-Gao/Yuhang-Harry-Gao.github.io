@@ -94,7 +94,20 @@
 
 
 
-
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var links = document.querySelectorAll('a[href^="http"]');
+          links.forEach(function(link) {
+              if (link.hostname !== window.location.hostname) {
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+              }
+          });
+      });
+      </script>
+      
+  </head>
 
 
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -215,7 +228,36 @@
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/bayestheorem/">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/machine-learning/">
+        <h2 class="post-title">
+            Machine Learning
+        </h2>
+	
+        <h3 class="post-subtitle">
+            Machine Learning
+        </h3>
+	
+        <div class="post-content-preview">
+	
+            <h1 id="机器学习是什么">机器学习是什么？</h1>
+<p>我也不知道，不过如图：
+<img src="/machinelearningimg/statistics.jpg" alt="statistics → machine learning → artificial intelligence" width="500"></p>
+       
+        </div>
+    </a>
+    <p class="post-meta">
+    
+        Posted by Yuhang on Sunday, September 1, 2024
+        
+        
+    
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/bayes-theorem/">
         <h2 class="post-title">
             Bayes&#39; theorem
         </h2>
@@ -237,36 +279,7 @@
     </a>
     <p class="post-meta">
     
-        Posted by Yuhang on Thursday, June 5, 2025
-        
-        
-    
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/machinelearning/">
-        <h2 class="post-title">
-            Machine Learning
-        </h2>
-	
-        <h3 class="post-subtitle">
-            Machine Learning
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            <h1 id="机器学习是什么">机器学习是什么？</h1>
-<p>我也不知道，不过如图：
-<img src="/machinelearningimg/statistics.jpg" alt="statistics → machine learning → artificial intelligence" width="500"></p>
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    
-        Posted by Yuhang on Sunday, June 1, 2025
+        Posted by Yuhang on Wednesday, June 5, 2024
         
         
     

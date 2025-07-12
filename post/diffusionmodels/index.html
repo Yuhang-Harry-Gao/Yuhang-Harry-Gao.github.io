@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -257,7 +257,7 @@
                 <blockquote>
 <p>&ldquo;The sculpture is already complete within the marble block, before I start my work. It is already there, I just have to chisel away the superfluous material.&quot;—— Michelangelo</p></blockquote>
 <p>写这篇blog是为了记录自己的学习过程。我认为: 如果我不能把知识写成文字, 那就说明我也没理解。<br>
-希望最后这篇 blog 能够顺便帮助 0 基础的朋友学习。<br>
+希望这篇 blog 能够顺便帮助 0 基础的朋友学习。<br>
 特别希望收到各位大佬的帮助和指导!</p>
 <h1 id="从0开始的-diffusion-model-学习">从0开始的 Diffusion Model 学习</h1>
 <p>很多人都说从 <a href="https://arxiv.org/abs/2006.11239"><strong>DDPM</strong></a> 和 <a href="https://arxiv.org/abs/2010.02502"><strong>DDIM</strong></a> 入手, 但是我觉得这对于像我这样的纯小白来说还是太难了。我推荐是先看看 <a href="https://arxiv.org/abs/1406.2661"><strong>GAN</strong></a> 和 <a href="https://arxiv.org/abs/1312.6114"><strong>VAE</strong></a> (网络上有很多讲解), 再学 <strong>Diffusion Model</strong> 可能会好理解一点。</p>
@@ -323,8 +323,28 @@
 </ul>
 <h1 id="扩散模型diffusion-models">扩散模型(Diffusion Models)</h1>
 <ul>
-<li>正向过程: $q(x_{1:T}|x_0)$，</li>
-<li>逆向过程: $p_{\theta}(x_{t-1}|x_t)$，${\theta}$ 代表神经网络的参数, 在 ${\theta}$ 参数下进行逆向过程</li>
+<li>
+<p>正向过程:</p>
+<ul>
+<li>
+<p>单步骤加噪
+$$q(\mathbf{x} | \mathbf{x}_{t-1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t} \mathbf{x} _{t-1}, \beta_t \mathbf{I})$$</p>
+</li>
+<li>
+<p>任意步长加噪过程
+$$q(\mathbf{x}_{1:T}|\mathbf{x}_0) = \prod_{t=1}^{T} q(\mathbf{x}_t | \mathbf{x}_{t-1})$$</p>
+</li>
+<li>
+<p>任意时刻</p>
+<p>根据高斯分布的性质: 多个独立高斯随机变量的和仍然是一个高斯随机变量，可以将上述多步累积的噪声合并，从而推导出任意时刻 $t$ 的边缘分布： $$q(\mathbf{x}_t | \mathbf{x}_0) = \mathcal{N}(\mathbf{x}_t; \sqrt{\bar{\alpha}_t} \mathbf{x}_0, (1 - \bar{\alpha}_t) \mathbf{I})$$</p>
+<p>$\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$: $\bar{\alpha}_t$ 是前 $t$ 次所有 $\alpha$ 值的乘积</p>
+</li>
+</ul>
+</li>
+<li>
+<p>逆向过程: $p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_t)$，${\theta}$ 代表神经网络的参数, 在 ${\theta}$ 参数下进行逆向过程
+$$p_\theta(\mathbf{x}_{t-1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t-1}; \boldsymbol{\mu}_\theta(\mathbf{x}_t, t), \boldsymbol{\Sigma}_\theta(\mathbf{x}_t, t))$$</p>
+</li>
 </ul>
 <h3 id="lower-bound">Lower Bound</h3>
 <p>Lower bound of $\log P(x)$：这个数值越大，说明模型生成的能力越强</p>
@@ -340,13 +360,13 @@ $ \text{VAE:} \quad \text{Maximize } \log P_{\theta}(x) \rightarrow \text{Maximi
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/bayestheorem/" data-toggle="tooltip" data-placement="top" title="Bayes&#39; theorem">&larr;
+                        <a href="/post/machine-learning/" data-toggle="tooltip" data-placement="top" title="Machine Learning">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/post/aistudio/" data-toggle="tooltip" data-placement="top" title="Google AI Studio 的参数设置">Next
+                        <a href="/post/diffusers/" data-toggle="tooltip" data-placement="top" title="Diffusers mini-tutorial">Next
                             Post &rarr;</a>
                     </li>
                     
@@ -414,9 +434,17 @@ $ \text{VAE:} \quad \text{Maximize } \log P_{\theta}(x) \rightarrow \text{Maximi
                         
                         
                         
+                        <a href="/tags/diffusion-models" title="diffusion models">
+                            diffusion models
+                        </a>
                         
                         
                         
+                        
+                        
+                        <a href="/tags/generative-models" title="generative models">
+                            generative models
+                        </a>
                         
                         
                         
@@ -427,6 +455,10 @@ $ \text{VAE:} \quad \text{Maximize } \log P_{\theta}(x) \rightarrow \text{Maximi
                         </a>
                         
                         
+                        
+                        <a href="/tags/probabilistic-machine-learning" title="probabilistic machine learning">
+                            probabilistic machine learning
+                        </a>
                         
                         
                         

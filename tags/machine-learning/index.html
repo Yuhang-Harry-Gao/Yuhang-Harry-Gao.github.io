@@ -94,7 +94,20 @@
 
 
 
-
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var links = document.querySelectorAll('a[href^="http"]');
+          links.forEach(function(link) {
+              if (link.hostname !== window.location.hostname) {
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+              }
+          });
+      });
+      </script>
+      
+  </head>
 
 
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -215,13 +228,13 @@
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/diffusionmodels/">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/diffusion-models/">
         <h2 class="post-title">
             Diffusion Model mini-tutorial
         </h2>
 	
         <h3 class="post-subtitle">
-            Diffusion Model: 文章本天成, 妙手偶得之
+            扩散模型: 文章本天成, 妙手偶得之
         </h3>
 	
         <div class="post-content-preview">
@@ -229,7 +242,7 @@
             <blockquote>
 <p>&ldquo;The sculpture is already complete within the marble block, before I start my work. It is already there, I just have to chisel away the superfluous material.&quot;—— Michelangelo</p></blockquote>
 <p>写这篇blog是为了记录自己的学习过程。我认为: 如果我不能把知识写成文字, 那就说明我也没理解。<br>
-希望最后这篇 blog 能够顺便帮助 0 基础的朋友学习。<br>
+希望这篇 blog 能够顺便帮助 $0$ 基础的朋友学习。<br>
 特别希望收到各位大佬的帮助和指导!</p>
        
         </div>
@@ -246,7 +259,36 @@
 <hr>
 
 <div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/bayestheorem/">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/machine-learning/">
+        <h2 class="post-title">
+            Machine Learning
+        </h2>
+	
+        <h3 class="post-subtitle">
+            Machine Learning
+        </h3>
+	
+        <div class="post-content-preview">
+	
+            <h1 id="机器学习是什么">机器学习是什么？</h1>
+<p>我也不知道，不过如图：
+<img src="/machinelearningimg/statistics.jpg" alt="statistics → machine learning → artificial intelligence" width="500"></p>
+       
+        </div>
+    </a>
+    <p class="post-meta">
+    
+        Posted by Yuhang on Sunday, September 1, 2024
+        
+        
+    
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/bayes-theorem/">
         <h2 class="post-title">
             Bayes&#39; theorem
         </h2>
@@ -268,36 +310,7 @@
     </a>
     <p class="post-meta">
     
-        Posted by Yuhang on Thursday, June 5, 2025
-        
-        
-    
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/machinelearning/">
-        <h2 class="post-title">
-            Machine Learning
-        </h2>
-	
-        <h3 class="post-subtitle">
-            Machine Learning
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            <h1 id="机器学习是什么">机器学习是什么？</h1>
-<p>我也不知道，不过如图：
-<img src="/machinelearningimg/statistics.jpg" alt="statistics → machine learning → artificial intelligence" width="500"></p>
-       
-        </div>
-    </a>
-    <p class="post-meta">
-    
-        Posted by Yuhang on Sunday, June 1, 2025
+        Posted by Yuhang on Wednesday, June 5, 2024
         
         
     

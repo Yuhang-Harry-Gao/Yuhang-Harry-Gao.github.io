@@ -94,7 +94,20 @@
 
 
 
-
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var links = document.querySelectorAll('a[href^="http"]');
+          links.forEach(function(link) {
+              if (link.hostname !== window.location.hostname) {
+                  link.target = '_blank';
+                  link.rel = 'noopener noreferrer';
+              }
+          });
+      });
+      </script>
+      
+  </head>
 
 
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -215,7 +228,7 @@
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://Yuhang-Harry-Gao.github.io/post/aistudio/">
+    <a href="https://Yuhang-Harry-Gao.github.io/post/ai-studio/">
         <h2 class="post-title">
             Google AI Studio 的参数设置
         </h2>

@@ -10,10 +10,10 @@
     <atom:link href="https://Yuhang-Harry-Gao.github.io/tags/generative-models/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Diffusion Model mini-tutorial</title>
-      <link>https://Yuhang-Harry-Gao.github.io/post/diffusionmodels/</link>
+      <link>https://Yuhang-Harry-Gao.github.io/post/diffusion-models/</link>
       <pubDate>Fri, 06 Jun 2025 00:00:00 +0000</pubDate>
-      <guid>https://Yuhang-Harry-Gao.github.io/post/diffusionmodels/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;The sculpture is already complete within the marble block, before I start my work. It is already there, I just have to chisel away the superfluous material.&amp;quot;—— Michelangelo&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;写这篇blog是为了记录自己的学习过程。我认为: 如果我不能把知识写成文字, 那就说明我也没理解。&lt;br&gt;&#xA;希望最后这篇 blog 能够顺便帮助 0 基础的朋友学习。&lt;br&gt;&#xA;特别希望收到各位大佬的帮助和指导!&lt;/p&gt;</description>
+      <guid>https://Yuhang-Harry-Gao.github.io/post/diffusion-models/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;The sculpture is already complete within the marble block, before I start my work. It is already there, I just have to chisel away the superfluous material.&amp;quot;—— Michelangelo&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;写这篇blog是为了记录自己的学习过程。我认为: 如果我不能把知识写成文字, 那就说明我也没理解。&lt;br&gt;&#xA;希望这篇 blog 能够顺便帮助 $0$ 基础的朋友学习。&lt;br&gt;&#xA;特别希望收到各位大佬的帮助和指导!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
